@@ -22,6 +22,7 @@ app.use(morgan("dev"));
 
 
 //Connect Mongo DB
+mongoose.set('strictQuery', false) //deprecation warning otherwise
 mongoose.connect(
   `${process.env.DB_STRING_MAIN}`,
   {
@@ -59,6 +60,9 @@ app.use(session({
 
 
 
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
 
 
