@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const saltRounds = 12;
 
 const UserSchema = new Schema({
   userName: {
@@ -52,6 +53,32 @@ const UserSchema = new Schema({
   profilePic: {
     // Do we need this
   },
-
-
 })
+
+// Mongoose "Pre" middleware to hash password before saving to DB
+UserSchema.pre("save", async function (next) {
+  const user = this;
+  if (!user.isModified("password")) {
+    return next();
+  }
+  try {
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(user.password, salt);
+    user.password = hashedPassword;
+  } catch (err) {
+    return next(err)
+  }
+})
+
+
+UserSchema.methods.comparePassword = function comparePassword(
+  candidatePassword,
+  cb
+) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    cb(err, isMatch);
+  });
+};
+
+
+module.exports = mongoose.model("User", UserSchema);
