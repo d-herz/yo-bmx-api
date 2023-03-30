@@ -4,25 +4,31 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const morgan = require("morgan");
+const cors = require('cors');
 
+// Cors Middleware
+app.use(cors({
+  origin: "",
+  methods: ['GET', 'POST']
+}))
 
-
-//Use .env file in config folder
+// Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
 
-//Static Folder
+// Static Folder
 app.use(express.static("public"));
 
-//Body Parsing
+// Body Parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Logging
+// Logging
 app.use(morgan("dev"));
 
 
-//Connect Mongo DB
-mongoose.set('strictQuery', false) //deprecation warning otherwise
+// Connect Mongo DB
+// deprecation warning otherwise
+mongoose.set('strictQuery', false)
 mongoose.connect(
   `${process.env.DB_STRING_MAIN}`,
   {
@@ -38,7 +44,7 @@ mongoose.connect(
   }
 );
 
-//Sessions 
+// Sessions 
 const store = new MongoDBStore({
   uri: process.env.DB_STRING_MAIN,
   collection: 'Sessions'
