@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { array } = require("../middleware/multer"); // do we need this?
 
 const PostSchema = new mongoose.Schema({
   title: {
