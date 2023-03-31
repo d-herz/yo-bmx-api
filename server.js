@@ -55,26 +55,21 @@ store.on('error', (error) => {
   console.log(error);
 });
 
-app.use(session({
-  secret: 'berty',
-  store: store,
-  resave: false,
-  saveUninitialized: false,
-}));
-
-
-
+app.use(
+  session(
+    {
+      secret: 'berty',
+      store: store,
+      resave: false,
+      saveUninitialized: false,
+    }
+  )
+);
 
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
-
-
-
-
-
-
 
 
 
