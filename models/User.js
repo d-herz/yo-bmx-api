@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: true,

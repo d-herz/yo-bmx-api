@@ -5,6 +5,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const morgan = require("morgan");
 const cors = require('cors');
+const passport = require("passport")
 
 // Cors Middleware
 app.use(cors({
@@ -25,6 +26,10 @@ app.use(express.json());
 // Logging
 app.use(morgan("dev"));
 
+// Passport and middleware
+require("./config/passport")(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Connect Mongo DB
 // deprecation warning otherwise
